@@ -3,7 +3,7 @@ from django.contrib import auth, messages
 from django.urls import reverse
 
 from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
-
+from basketapp.models import Basket
 
 def login(request):
     if request.method == 'POST':
@@ -42,7 +42,11 @@ def profile(request):
             return HttpResponseRedirect(reverse('users:profile'))
     else:
         form = UserProfileForm(instance=request.user)
-    context = {'title': 'GeekShop - Личный кабинет', 'form': form}
+    context = {
+        'title': 'GeekShop - Личный кабинет',
+        'form': form,
+        'baskets': Basket.objects.all(),
+    }
     return render(request, 'authapp/profile.html', context)
 
 
